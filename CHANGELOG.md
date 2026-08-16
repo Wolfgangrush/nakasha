@@ -8,15 +8,16 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 - Drag-and-drop / file picker import of High Court board and cause-list
   PDFs.
-- Calibrated parser for the Bar Association Daily Board format, with
-  confidence scoring that surfaces low-confidence pages in the status bar.
+- Calibrated parser for the Bar Association Daily Board format. Format
+  detection scores each parser and picks the highest; any page carrying no
+  text layer is named to you rather than silently contributing nothing.
 - Calibrated parser for the High Court Daily Main Causelist format.
 - Layout-based fallback parser for boards whose format is not yet
   calibrated, so unrecognised courts still produce a usable table.
 - Name-matching engine with support for initials, aliases, and common
   Indian name orderings (e.g. `S. Kumar` matching `Fiktorne, Kumar`).
 - Per-matter matching that records which of the advocate's names caused
-  each row to be included, shown in the on-screen results table.
+  each row to be included.
 - Output PDF containing only the advocate's matters, formatted as a
   six-column table: Name of Court, Sr., Number, Name of Case, Name of
   the counsels, Office note given.

@@ -130,4 +130,60 @@ final class FalsifierTests: XCTestCase {
                            "typing the surname must find it printed as '\(shape)'")
         }
     }
+
+    // MARK: - Route 5: one scanned page inside a readable board disappears in silence
+
+    /// A board can be 87 pages of clean text with a single page scanned in as an image. The
+    /// extractor only refuses when the *whole* document has no glyphs, so that one page yields
+    /// no lines, contributes no rows, and says nothing about it. Every matter printed on it is
+    /// invisible, and the result still looks like a complete answer.
+    ///
+    /// README, "What it does not do", promises the opposite: *"NAKASHA tells you which page it
+    /// cannot read, rather than guessing at it."* 01-PRD §8 specifies the same behaviour. Until
+    /// the page is named, the product's own falsifier is live in the shipped code.
+    func testAPageWithNoTextLayerIsNamedRatherThanSilentlyDropped() throws {
+        let url = try Self.twoPagePDFSecondPageBlank()
+        defer { try? FileManager.default.removeItem(at: url) }
+
+        let pages = try PDFTextExtractor.pages(of: url)
+        XCTAssertEqual(pages.count, 2, "both pages must survive extraction")
+        XCTAssertTrue(pages[0].hasTextLayer, "page 1 was drawn with real text")
+        XCTAssertFalse(pages[1].hasTextLayer,
+                       "page 2 carries no glyphs and must be FLAGGED, not quietly accepted")
+
+        let result = try BoardService().run(.init(pdfURLs: [url], watchedNamesText: ""))
+        XCTAssertTrue(
+            result.warnings.contains { $0.contains("2") },
+            "the advocate must be told page 2 could not be read. A page that contributes "
+            + "nothing in silence is exactly the failure this product may not have."
+        )
+    }
+
+    /// Two pages: the first carries drawn text, the second is deliberately empty — the shape of
+    /// a board with one scanned insert.
+    private static func twoPagePDFSecondPageBlank() throws -> URL {
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("nakasha-blankpage-\(UUID().uuidString).pdf")
+        var box = CGRect(x: 0, y: 0, width: 595, height: 842)
+        guard let consumer = CGDataConsumer(url: url as CFURL),
+              let ctx = CGContext(consumer: consumer, mediaBox: &box, nil) else {
+            throw XCTSkip("could not create a PDF context on this machine")
+        }
+
+        ctx.beginPDFPage(nil)
+        let text = NSAttributedString(
+            string: "1  WP/7117/2091 R RUMEDOLI # THE SUB-DIVI:O  BADAM SAKUTU TESTWALA RUMDAL A.",
+            attributes: [.font: CTFontCreateWithName("Helvetica" as CFString, 11, nil)]
+        )
+        let ctLine = CTLineCreateWithAttributedString(text as CFAttributedString)
+        ctx.textPosition = CGPoint(x: 40, y: 760)
+        CTLineDraw(ctLine, ctx)
+        ctx.endPDFPage()
+
+        ctx.beginPDFPage(nil)   // no glyphs at all — the scanned-insert case
+        ctx.endPDFPage()
+
+        ctx.closePDF()
+        return url
+    }
 }

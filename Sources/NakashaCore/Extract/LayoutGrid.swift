@@ -62,9 +62,17 @@ public struct LayoutLine: Equatable, Sendable {
 public struct LayoutPage: Equatable, Sendable {
     public let number: Int
     public let lines: [LayoutLine]
-    public init(number: Int, lines: [LayoutLine]) {
+
+    /// False when the page carried no drawn glyphs at all — a scan or a photograph pasted into
+    /// an otherwise readable board. Such a page contributes no rows, so it MUST be reported:
+    /// a page that silently contributes nothing is indistinguishable from a page with nothing
+    /// on it, and every matter printed there would vanish without a word. See 01-PRD §8.
+    public let hasTextLayer: Bool
+
+    public init(number: Int, lines: [LayoutLine], hasTextLayer: Bool = true) {
         self.number = number
         self.lines = lines
+        self.hasTextLayer = hasTextLayer
     }
 }
 

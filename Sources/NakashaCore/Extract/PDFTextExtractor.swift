@@ -38,7 +38,9 @@ public enum PDFTextExtractor {
                 pageHeight: uprightHeight(of: page),
                 originTopLeft: false
             )
-            pages.append(LayoutPage(number: pageIndex + 1, lines: lines))
+            pages.append(LayoutPage(number: pageIndex + 1,
+                                    lines: lines,
+                                    hasTextLayer: !glyphs.isEmpty))
         }
 
         if !anyInk {

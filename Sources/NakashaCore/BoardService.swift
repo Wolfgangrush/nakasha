@@ -64,7 +64,24 @@ public struct BoardService {
 
         for url in input.pdfURLs {
             do {
-                let lines = try PDFTextExtractor.lines(of: url)
+                let extracted = try PDFTextExtractor.pages(of: url)
+
+                // A page with no text layer yields no lines and therefore no matters. Name it.
+                // Staying silent here is the one failure this product may not have: the page
+                // looks identical to a page that genuinely held nothing. (01-PRD §8.)
+                let unreadable = extracted.filter { !$0.hasTextLayer }.map(\.number)
+                if !unreadable.isEmpty {
+                    let list = unreadable.map(String.init).joined(separator: ", ")
+                    let plural = unreadable.count == 1 ? "page \(list) has" : "pages \(list) have"
+                    warnings.append(
+                        "\(url.lastPathComponent): \(plural) no text layer and could not be read. "
+                        + "Check \(unreadable.count == 1 ? "that page" : "those pages") against the board by eye."
+                    )
+                }
+
+                let lines = extracted.flatMap { page in
+                    page.lines.map { LayoutLine(text: $0.text, page: page.number, y: $0.y) }
+                }
                 var parsed = FormatDetector.parse(lines: lines, sourceName: url.lastPathComponent)
                 // Stamp provenance now, while we still know which file these rows came from.
                 // The click-through needs it to open the right document.
