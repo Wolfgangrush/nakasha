@@ -1,0 +1,17 @@
+# Build products
+.build/
+build/
+*.dmg
+
+# macOS
+.DS_Store
+
+# Real board PDFs must never enter this repository — it is public and cause lists
+# carry live litigant names. Fixtures are synthetic, always. (CLAUDE.md rule 4.)
+*.pdf
+!BMAD/**/*.pdf
+
+# icon build scratch
+Resources/AppIcon.iconset/
+
+Resources/AppIcon.iconset/

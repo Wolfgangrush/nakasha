@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- NAKASHA app icon.
+       "nakasha" = the sanctioned plan. The mark is a board sheet with one row
+       found: the whole product in one image. Palette is the app's own rust
+       tokens from Sources/NakashaCore/Render/Palette.swift, so the icon, the
+       interface and the exported PDF all agree. -->
+  <defs>
+    <linearGradient id="rust" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0"   stop-color="#C0613B"/>
+      <stop offset="0.55" stop-color="#9C4A2F"/>
+      <stop offset="1"   stop-color="#7C3722"/>
+    </linearGradient>
+    <linearGradient id="sheet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFDFB"/>
+      <stop offset="1" stop-color="#F3E6DF"/>
+    </linearGradient>
+    <filter id="drop" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="20" flood-color="#000000" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <!-- squircle body, on Apple's icon grid (824 of 1024, r = 22.37%) -->
+  <rect x="100" y="100" width="824" height="824" rx="184" fill="url(#rust)"/>
+  <!-- top light, so it reads as a physical object rather than a flat swatch -->
+  <rect x="100" y="100" width="824" height="824" rx="184" fill="none"
+        stroke="#FFFFFF" stroke-opacity="0.16" stroke-width="4"/>
+
+  <!-- the board sheet -->
+  <g filter="url(#drop)">
+    <rect x="286" y="240" width="452" height="556" rx="30" fill="url(#sheet)"/>
+  </g>
+
+  <!-- rows. Deliberately few and thick so the mark still reads at 16px. -->
+  <g fill="#CFC4BA">
+    <rect x="346" y="318" width="332" height="30" rx="15"/>
+    <rect x="346" y="392" width="286" height="30" rx="15"/>
+    <rect x="346" y="540" width="312" height="30" rx="15"/>
+    <rect x="346" y="614" width="252" height="30" rx="15"/>
+    <rect x="346" y="688" width="300" height="30" rx="15"/>
+  </g>
+
+  <!-- the found row -->
+  <rect x="316" y="452" width="392" height="56" rx="28" fill="#9C4A2F"/>
+  <!-- and the mark against it -->
+  <path d="M 372 480 l 22 22 l 44 -46" fill="none" stroke="#FFF7F2"
+        stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

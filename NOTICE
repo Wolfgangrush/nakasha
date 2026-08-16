@@ -1,0 +1,23 @@
+NAKASHA — High Court Board Parser
+Copyright 2026 Rushikesh R. Mahajan (publishing as wolfgang_rush)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License in the LICENSE file distributed
+with this work.
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+---
+
+This product includes no third-party code. It links only frameworks
+supplied with macOS by Apple Inc. (Foundation, PDFKit, CoreGraphics,
+CoreText, AppKit, SwiftUI, UniformTypeIdentifiers). No dependency is
+downloaded at build time or at run time.
+
+"NAKASHA" and "wolfgang_rush" are names used by the author. Section 6 of
+the License grants no right to use them.

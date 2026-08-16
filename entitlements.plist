@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- App Sandbox is on. Only user-selected files are reachable. -->
+    <key>com.apple.security.app-sandbox</key>
+    <true/>
+
+    <!-- Read/write files the user explicitly chooses (board PDFs in, results out). -->
+    <key>com.apple.security.files.user-selected.read-write</key>
+    <true/>
+
+    <!--
+        Intentionally NOT present — and that absence is the point:
+          com.apple.security.network.client          (outbound sockets)
+          com.apple.security.network.server          (inbound sockets)
+          com.apple.security.network.egress           (egress control)
+        No networking entitlement is granted. The sandbox will deny any
+        attempt to open a socket, regardless of what code tries to do it.
+        That is the mechanism by which "nothing leaves your Mac" is
+        enforced, not merely promised.
+    -->
+</dict>
+</plist>
